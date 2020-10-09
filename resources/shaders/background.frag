@@ -4,6 +4,7 @@ in INTERFACE {
 	vec2 uv;
 } In ;
 
+uniform bool isLiveMode = false;
 uniform float time;
 uniform float secondsPerMeasure;
 uniform vec2 inverseScreenSize;
@@ -110,7 +111,9 @@ void main(){
 	
 	for(int i = 0; i < count; i++){
 		// Compute position of the measure currentMesure+i.
-		vec2 position = vec2(0.005, keyboardHeight + (secondsPerMeasure*(currentMesure+i) - time)*mainSpeed*0.5);
+		vec2 position = isLiveMode ?
+			vec2(0.005, -(keyboardHeight + (secondsPerMeasure*(currentMesure+i) - 3.0 - time)*mainSpeed*0.5)) :
+			vec2(0.005, keyboardHeight + (secondsPerMeasure*(currentMesure+i) - time)*mainSpeed*0.5);
 		
 		// Compute color for the number display, and for the horizontal line.
 		float numberIntensity = useDigits ? printNumber(currentMesure + i,position, In.uv, scale) : 0.0;

@@ -7,7 +7,7 @@
 
 #include "Score.h"
 
-Score::Score(double secondsPerMeasure){
+Score::Score(double secondsPerMeasure, bool isLiveMode){
 	
 	// Load font atlas.
 	GLuint textureId = ResourcesManager::getTextureFor("font");
@@ -18,6 +18,8 @@ Score::Score(double secondsPerMeasure){
 	glUseProgram(_programId);
 	GLuint sigID = glGetUniformLocation(_programId, "secondsPerMeasure");
 	glUniform1f(sigID, float(secondsPerMeasure));
+	GLuint isLiveModeID = glGetUniformLocation(_programId, "isLiveMode");
+	glUniform1i(isLiveModeID, isLiveMode);
 	glUseProgram(0);
 
 }

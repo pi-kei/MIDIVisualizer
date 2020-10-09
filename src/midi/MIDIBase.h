@@ -66,6 +66,7 @@ struct ActiveNoteInfos {
 	float duration = 0.0f;
 	int set = -1;
 	bool enabled = false;
+	float velocity = 1.0f;
 };
 
 #endif // MIDI_BASE_H

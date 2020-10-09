@@ -12,7 +12,7 @@ class Score : public ScreenQuad {
 public:
 
 	/// Init function with measure time.
-	Score(double secondsPerMeasure);
+	Score(double secondsPerMeasure, bool isLiveMode = false);
 	
 	void setScaleAndMinorWidth(const float scale, const float width);
 	

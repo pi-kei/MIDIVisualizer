@@ -4,7 +4,8 @@
 #include "helpers/Configuration.h"
 #include "helpers/ResourcesManager.h"
 
-#include "rendering/Renderer.h"
+//#include "rendering/Renderer.h"
+#include "rendering/LiveRenderer.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
@@ -17,6 +18,7 @@
 #define INITIAL_SIZE_WIDTH 1280
 #define INITIAL_SIZE_HEIGHT 600
 
+typedef LiveRenderer Renderer;
 
 void printHelp(){
 	std::string configOpts, setsOpts;
@@ -207,9 +209,12 @@ int main( int argc, char** argv) {
 	}
 
 	std::string midiFilePath;
+	bool live = false;
 	// Check if a path is given in argument.
 	if(args.count("midi") > 0){
 		midiFilePath = args["midi"][0];
+	} else if(live || args.count("live") > 0 && Configuration::parseBool(args["live"][0])) {
+		live = true;
 	} else {
 		// We are in direct-to-gui mode.
 		nfdchar_t *outPath = NULL;
@@ -229,7 +234,7 @@ int main( int argc, char** argv) {
 	Renderer renderer(isw, ish, fullscreen);
 
 	// Load midi file, graphics setup.
-	if(!renderer.loadFile(midiFilePath)){
+	if(!live && !renderer.loadFile(midiFilePath)){
 		// File not found, probably (error message handled locally).
 		renderer.clean();
 		glfwDestroyWindow(window);
@@ -277,7 +282,7 @@ int main( int argc, char** argv) {
 
 
 	const bool directRecord = args.count("export") > 0;
-	if(directRecord){
+	if(!live && directRecord){
 		const int framerate = args.count("framerate") > 0 ? Configuration::parseInt(args["framerate"][0]) : 60;
 		const int bitrate = args.count("bitrate") > 0 ? Configuration::parseInt(args["bitrate"][0]) : 40;
 		const bool pngAlpha = args.count("png-alpha") > 0 ? Configuration::parseBool(args["png-alpha"][0]) : false;

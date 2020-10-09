@@ -4,6 +4,7 @@ layout(location = 0) in vec2 v;
 layout(location = 1) in vec4 id; //note id, start, duration, is minor
 layout(location = 2) in float channel; //note id, start, duration, is minor
 
+uniform bool isLiveMode = false;
 uniform float time;
 uniform float mainSpeed;
 uniform float minorsWidth = 1.0;
@@ -38,7 +39,9 @@ void main(){
 	float b = -notesCount + 1.0 - 2.0 * float(minNoteMajor);
 
 	float horizLoc = (id.x * a + b + id.w) / notesCount;
-	float vertLoc = (Out.noteSize.y * 0.5 + (2.0 * keyboardHeight - 1.0)) + mainSpeed * (id.y - time);
+	float vertLoc = isLiveMode ?
+		-((Out.noteSize.y * 0.5 - (2.0 * keyboardHeight - 1.0)) + mainSpeed * (id.y - time)) : 
+		(Out.noteSize.y * 0.5 + (2.0 * keyboardHeight - 1.0)) + mainSpeed * (id.y - time);
 	vec2 noteShift = vec2(horizLoc, vertLoc);
 	
 	// Scale uv.
