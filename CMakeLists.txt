@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version")
 
 project(MIDIVisualizer)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE "Release")
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -28,6 +28,9 @@ find_package(OpenGL REQUIRED)
 
 # Add FFMPEG if available
 find_package(FFMPEG)
+
+# Add RtMidi17
+add_subdirectory(libs/RtMidi17/)
 
 ## Projects
 
@@ -131,7 +134,7 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/resources FILES ${Shaders})
 add_executable(MIDIVisualizer ${LibSources} ${Sources} ${Shaders})
 
 target_include_directories(MIDIVisualizer PRIVATE src/libs/ src/helpers/)
-target_link_libraries(MIDIVisualizer PRIVATE nfd glfw ${GLFW_LIBRARIES} ${OPENGL_gl_LIBRARY})
+target_link_libraries(MIDIVisualizer PRIVATE nfd glfw ${GLFW_LIBRARIES} ${OPENGL_gl_LIBRARY} RtMidi17)
 add_dependencies(MIDIVisualizer Packaging)
 
 # Add dependency to FFmpeg if available.
