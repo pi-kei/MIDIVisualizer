@@ -5,6 +5,7 @@ ext/
 tracks/
 x64/
 .vs/
+.vscode/
 *.VC.db
 *.user
 *.xcodeproj
